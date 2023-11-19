@@ -29,17 +29,16 @@ $(BUILD_DIR)/$(PROGRAM).hex : $(BUILD_DIR) $(BUILD_DIR)/$(PROGRAM).elf
 $(BUILD_DIR)/$(PROGRAM).elf: $(BUILD_DIR) $(OBJECT_FILES) $(PROGRAM).ld
 	$(CC) $(CFLAGS) $(LDFLAGS) -T $(PROGRAM).ld $(OBJECT_FILES) -o $@
 
-$(BUILD_DIR)/%.o: $(BUILD_DIR) $(SRC_DIR)/%.c
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BUILD_DIR)/%.o: $(BUILD_DIR) $(SRC_DIR)/%.S
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.S $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
 .PHONY: flash
 flash: $(BUILD_DIR)/$(PROGRAM).elf
-	JLinkExe -devide FE310 -if JTAG -speed 4000 -jtagconf -1,-1 \
-		-CommandFile $(BUILD_DIR)/$(PROGRAM).elf
+	echo -e "r\nloadfile $<\nexit" | JLinkExe -device FE310 -if JTAG -speed 4000 -jtagconf -1,-1 \
 
 
 .PHONY: clean
