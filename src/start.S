@@ -1,4 +1,8 @@
 .section .init
+
+.extern stack_top
+.extern main
+
 .align 2
 .globl _start
 _start:

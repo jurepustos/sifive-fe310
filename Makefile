@@ -2,6 +2,7 @@ PROGRAM = program
 
 SRC_DIR = src
 BUILD_DIR = build
+LD_SCRIPT = sifive.ld
 
 CC = riscv64-elf-gcc
 OBJCOPY = riscv64-elf-objcopy
@@ -26,8 +27,8 @@ $(BUILD_DIR):
 $(BUILD_DIR)/$(PROGRAM).hex : $(BUILD_DIR) $(BUILD_DIR)/$(PROGRAM).elf
 	$(OBJCOPY) $(OBJCOPYFLAGS) $(BUILD_DIR)/$(PROGRAM).elf $(BUILD_DIR)/$(PROGRAM).hex
 
-$(BUILD_DIR)/$(PROGRAM).elf: $(BUILD_DIR) $(OBJECT_FILES) $(PROGRAM).ld
-	$(CC) $(CFLAGS) $(LDFLAGS) -T $(PROGRAM).ld $(OBJECT_FILES) -o $@
+$(BUILD_DIR)/$(PROGRAM).elf: $(BUILD_DIR) $(OBJECT_FILES) 
+	$(CC) $(CFLAGS) $(LDFLAGS) -T $(LD_SCRIPT) $(OBJECT_FILES) -o $@
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -38,7 +39,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.S $(BUILD_DIR)
 
 .PHONY: flash
 flash: $(BUILD_DIR)/$(PROGRAM).elf
-	echo -e "r\nloadfile $<\nexit" | JLinkExe -device FE310 -if JTAG -speed 4000 -jtagconf -1,-1 \
+	echo -e "r\nloadfile $<\nexit" | JLinkExe -device FE310 -if JTAG -speed 4000 -jtagconf -1,-1
 
 
 .PHONY: clean
