@@ -1,5 +1,5 @@
-#ifndef H
-#define H
+#ifndef UART_H
+#define UART_H
 
 #include "primitives.h"
 #define UART0_BASEADDR 0x10013000

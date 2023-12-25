@@ -1,5 +1,5 @@
 #include "interrupts.h"
-#include "csr.h"
+#include "riscv.h"
 
 inline void enable_interrupts() {
     write_mstatus(read_mstatus() | MSTATUS_MIE);
