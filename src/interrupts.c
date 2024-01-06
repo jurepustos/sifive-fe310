@@ -1,6 +1,10 @@
 #include "interrupts.h"
 #include "riscv.h"
 
+inline void register_vector_table(void *vector_table) {
+    write_mtvec((uint32) vector_table | 0x1);
+}
+
 inline void enable_interrupts() {
     write_mstatus(read_mstatus() | MSTATUS_MIE);
 }

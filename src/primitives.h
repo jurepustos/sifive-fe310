@@ -9,6 +9,9 @@ typedef char int8;
 typedef unsigned char uint8;
 typedef char byte;
 
+#define true 1
+#define false 0
+
 
 
 #endif
