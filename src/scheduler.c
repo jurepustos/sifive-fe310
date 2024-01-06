@@ -13,20 +13,22 @@ void spin() {
 }
 
 task* create_task(void (*task_func)()) {
-    tasks[ntasks] = {
+    tasks[ntasks] = (task) {
         .task_func = task_func,
         .context = {
-            .ra = &spin,
-            .sp = &task_stacks[ntasks]
+            .ra = (uint32) &spin,
+            .sp = (uint32) &task_stacks[ntasks]
         },
-        .trapframe = {
-            .ra = &spin,
-            .sp = &task_stasks[ntasks]
-            .mepc = task_func,
+        .trapframe = &(trapframe_t) {
+            .ra = (uint32) &spin,
+            .sp = (uint32) &task_stacks[ntasks],
+            .mepc = (uint32) task_func,
             .mstatus = MSTATUS_MIE
         }
     };
     ntasks++;
+
+    return &tasks[ntasks-1];
 }
 
 void schedule_next_task() {

@@ -44,6 +44,9 @@ typedef struct {
 } trapframe_t;
 
 
+void _vector_table();
+void register_vector_table(void *vector_table);
+
 void enable_interrupts();
 void disable_interrupts();
 int get_interrupts_enabled();
@@ -92,7 +95,7 @@ __attribute__((always_inline)) static inline void __save_trapframe() {
         "sw t0,   0*4(sp)   \n"
         "csrr t0, mstatus   \n"
         "sw t0,   1*4(sp)"
-        :: "i" (-sizeof(task_trapframe))
+        :: "i" (-sizeof(trapframe_t))
     );
 }
 
@@ -131,8 +134,9 @@ __attribute__((always_inline)) static inline void __restore_trapframe() {
         "lw s9,  28*4(sp) \n"
         "lw s10, 29*4(sp) \n"
         "lw s11, 30*4(sp) \n"
-        :: "i" (sizeof(task_trapframe))
+        :: "i" (sizeof(trapframe_t))
     );
 }
+
 
 #endif
