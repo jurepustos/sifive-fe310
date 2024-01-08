@@ -2,8 +2,8 @@
 #define TASKS_H
 
 #include "primitives.h"
-#include "interrupts.h"
-#include "riscv.h"
+#include "riscv/interrupts.h"
+#include "riscv/csr.h"
 
 #define MAX_NTASKS 5
 #define WORD_SIZE 4
@@ -29,8 +29,8 @@ typedef struct {
 } task_context;
 
 typedef struct {
+    uint32 sp;
     task_context context;
-    trapframe_t *trapframe;
     void (*task_func)();
 } task;
 

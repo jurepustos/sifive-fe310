@@ -1,7 +1,7 @@
-#ifndef RISCV_H
-#define RISCV_H
+#ifndef CSR_H
+#define CSR_H
 
-#include "primitives.h"
+#include "../primitives.h"
 
 #define MSTATUS_MPP_MASK (3 << 11) // previous mode
 #define MSTATUS_MPP_M (3 << 11)
@@ -92,37 +92,6 @@ __attribute__((always_inline)) static inline uint32 read_mscratch() {
 __attribute__((always_inline)) static inline void write_mscratch(uint32 mscratch) {
     asm volatile("csrw mscratch, %0" : : "r" (mscratch)); 
 }
-
-__attribute__((always_inline)) static inline uint32 read_sp() {
-    uint32 sp;
-    asm volatile("mv %0, sp" : "=r" (sp) );
-    return sp;
-}
-
-__attribute__((always_inline)) static inline void write_sp(uint32 sp) {
-    asm volatile("mv sp, %0" : : "r" (sp) );
-}
-
-__attribute__((always_inline)) static inline uint32 read_tp() {
-    uint32 tp;
-    asm volatile("mv %0, tp" : "=r" (tp) );
-    return tp;
-}
-
-__attribute__((always_inline)) static inline void write_tp(uint32 tp) {
-    asm volatile("mv tp, %0" : : "r" (tp) );
-}
-
-__attribute__((always_inline)) static inline uint32 read_ra() {
-    uint32 ra;
-    asm volatile("mv %0, ra" : "=r" (ra) );
-    return ra;
-}
-
-__attribute__((always_inline)) static inline void write_ra(uint32 ra) {
-    asm volatile("mv ra, %0" : : "r" (ra) );
-}
-
 
 
 #endif

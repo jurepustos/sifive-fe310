@@ -1,7 +1,7 @@
 #ifndef GPIO_H
 #define GPIO_H
 
-#include "primitives.h"
+#include "../primitives.h"
 
 #define GPIO_BASE 0x10012000
 #define GPIO_GREEN_LED_PIN 19

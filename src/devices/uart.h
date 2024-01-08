@@ -1,7 +1,7 @@
 #ifndef UART_H
 #define UART_H
 
-#include "primitives.h"
+#include "../primitives.h"
 #define UART0_BASEADDR 0x10013000
 #define UART1_BASEADDR 0x10023000
 

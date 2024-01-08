@@ -1,7 +1,7 @@
 #ifndef INTERRUPTS_H
 #define INTERRUPTS_H
 
-#include "primitives.h"
+#include "../primitives.h"
 
 #define MSTATUS_MIE (1 << 3)    // machine-mode interrupt enable
 #define MIE_MEIE (1 << 11) // external

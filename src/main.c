@@ -1,6 +1,6 @@
-#include "gpio.h"
-#include "interrupts.h"
-#include "uart.h"
+#include "devices/gpio.h"
+#include "riscv/interrupts.h"
+#include "devices/uart.h"
 
 int main() {
     // initialize LED outputs

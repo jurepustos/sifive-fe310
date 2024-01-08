@@ -1,5 +1,5 @@
 #include "interrupts.h"
-#include "riscv.h"
+#include "riscv/csr.h"
 
 inline void register_vector_table(void *vector_table) {
     write_mtvec((uint32) vector_table | 0x1);

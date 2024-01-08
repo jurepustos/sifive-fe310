@@ -1,7 +1,7 @@
 #include "primitives.h"
-#include "interrupts.h"
+#include "riscv/interrupts.h"
 #include "tasks.h"
-#include "riscv.h"
+#include "riscv/csr.h"
 
 static task tasks[MAX_NTASKS];
 static uint8 task_stacks[MAX_NTASKS][TASK_STACK_SIZE];
@@ -13,22 +13,25 @@ void spin() {
 }
 
 task* create_task(void (*task_func)()) {
+    trapframe_t *initial_trapframe = (trapframe_t *) &task_stacks[ntasks+1] - sizeof(trapframe_t);
+    initial_trapframe->ra = (uint32) &spin;
+    initial_trapframe->mepc = (uint32) task_func;
+    initial_trapframe->mstatus = MSTATUS_MIE;
+
     tasks[ntasks] = (task) {
         .task_func = task_func,
+        .sp = (uint32) initial_trapframe,
         .context = {
             .ra = (uint32) &spin,
-            .sp = (uint32) &task_stacks[ntasks]
         },
-        .trapframe = &(trapframe_t) {
-            .ra = (uint32) &spin,
-            .sp = (uint32) &task_stacks[ntasks],
-            .mepc = (uint32) task_func,
-            .mstatus = MSTATUS_MIE
-        }
     };
     ntasks++;
 
     return &tasks[ntasks-1];
+}
+
+void start_scheduler() {
+
 }
 
 void schedule_next_task() {
