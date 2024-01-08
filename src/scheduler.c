@@ -2,6 +2,7 @@
 #include "riscv/interrupts.h"
 #include "tasks.h"
 #include "riscv/csr.h"
+#include "riscv/clint.h"
 
 static task tasks[MAX_NTASKS];
 static uint8 task_stacks[MAX_NTASKS][TASK_STACK_SIZE];
