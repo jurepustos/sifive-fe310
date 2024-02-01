@@ -11,29 +11,31 @@ LDFLAGS = -Wl,--gc-sections -Wl,-Map,$(BUILD_DIR)/$(PROGRAM).map \
 		  -nostartfiles -nostdlib
 OBJCOPYFLAGS = -O ihex
 
-C_SOURCE_FILES = $(wildcard $(SRC_DIR)/*.c)
-ASM_SOURCE_FILES = $(wildcard $(SRC_DIR)/*.S)
-HEADER_FILES = $(wildcard $(SRC_DIR)/*.h)
+C_SOURCE_FILES = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/**/*.c)
+ASM_SOURCE_FILES = $(wildcard $(SRC_DIR)/*.S) $(wildcard $(SRC_DIR)/**/*.S)
+HEADER_FILES = $(wildcard $(SRC_DIR)/*.h) $(wildcard $(SRC_DIR)/**/*.h)
+SOURCE_DIRS = $(sort $(dir $(C_SOURCE_FILES) $(ASM_SOURCE_FILES)))
+BUILD_DIRS = $(BUILD_DIR) $(subst $(SRC_DIR),$(BUILD_DIR),$(SOURCE_DIRS))
 OBJECT_FILES = $(C_SOURCE_FILES:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o) \
 	$(ASM_SOURCE_FILES:$(SRC_DIR)/%.S=$(BUILD_DIR)/%.o)
 
 
-$(PROGRAM).elf: $(BUILD_DIR) $(BUILD_DIR)/$(PROGRAM).elf $(BUILD_DIR)/$(PROGRAM).hex $(HEADER_FILES)
+$(PROGRAM).elf: $(BUILD_DIRS) $(BUILD_DIR)/$(PROGRAM).elf $(BUILD_DIR)/$(PROGRAM).hex $(HEADER_FILES)
 	cp $(BUILD_DIR)/$(PROGRAM).elf $(PROGRAM).elf
 
-$(BUILD_DIR):
-	mkdir build
+$(BUILD_DIRS):
+	mkdir $@
 
-$(BUILD_DIR)/$(PROGRAM).hex : $(BUILD_DIR) $(BUILD_DIR)/$(PROGRAM).elf
+$(BUILD_DIR)/$(PROGRAM).hex: $(BUILD_DIRS) $(BUILD_DIR)/$(PROGRAM).elf
 	$(OBJCOPY) $(OBJCOPYFLAGS) $(BUILD_DIR)/$(PROGRAM).elf $(BUILD_DIR)/$(PROGRAM).hex
 
-$(BUILD_DIR)/$(PROGRAM).elf: $(BUILD_DIR) $(OBJECT_FILES) 
+$(BUILD_DIR)/$(PROGRAM).elf: $(BUILD_DIRS) $(OBJECT_FILES) 
 	$(CC) $(CFLAGS) $(LDFLAGS) -T $(LD_SCRIPT) $(OBJECT_FILES) -o $@
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(BUILD_DIR)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(BUILD_DIRS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.S $(BUILD_DIR)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.S $(BUILD_DIRS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
