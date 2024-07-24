@@ -34,7 +34,7 @@ typedef struct {
 void gpio_output_enable(uint32 pin);
 void gpio_input_enable(uint32 pin);
 
-int gpio_read_pin(uint32 pin);
+int32 gpio_read_pin(uint32 pin);
 void gpio_set_pin(uint32 pin);
 void gpio_clear_pin(uint32 pin);
 void gpio_toggle_pin(uint32 pin);

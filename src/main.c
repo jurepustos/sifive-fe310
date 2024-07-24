@@ -1,6 +1,7 @@
 #include "devices/gpio.h"
 #include "riscv/interrupts.h"
 #include "devices/uart.h"
+#include "scheduler.h"
 
 
 void init_led() {
@@ -35,6 +36,7 @@ int main() {
     init_led();
     init_uart();
     init_interrupts();
+    start_scheduler();
 
     return 0;
 }

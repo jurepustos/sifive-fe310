@@ -10,7 +10,7 @@ __attribute__((interrupt ("machine"))) void ext_handler() {
 
 }
 
-// the timer handler should context-switch
+// the timer handler should handle the scheduler
 __attribute__((interrupt ("machine"))) void timer_handler() {
 
 }

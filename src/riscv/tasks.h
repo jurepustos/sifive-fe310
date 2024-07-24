@@ -1,13 +1,9 @@
 #ifndef TASKS_H
 #define TASKS_H
 
-#include "primitives.h"
-#include "riscv/interrupts.h"
-#include "riscv/csr.h"
-
-#define MAX_NTASKS 5
-#define WORD_SIZE 4
-#define TASK_STACK_SIZE (256*WORD_SIZE)
+#include "../primitives.h"
+#include "interrupts.h"
+#include "csr.h"
 
 
 // used for kernel calls/software interrupts
@@ -27,12 +23,6 @@ typedef struct {
     uint32 s10;
     uint32 s11;
 } task_context;
-
-typedef struct {
-    uint32 sp;
-    task_context context;
-    void (*task_func)();
-} task;
 
 
 __attribute__((always_inline)) static inline void save_context(task_context *context) {

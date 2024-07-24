@@ -1,6 +1,7 @@
 #include "primitives.h"
+#include "scheduler.h"
 #include "riscv/interrupts.h"
-#include "tasks.h"
+#include "riscv/tasks.h"
 #include "riscv/csr.h"
 #include "riscv/clint.h"
 
@@ -13,29 +14,32 @@ void spin() {
     while (true) {}
 }
 
-task* create_task(void (*task_func)()) {
+void start_task(void (*task_func)()) {
+    // trapframe is located at the top of this task's stack
     trapframe_t *initial_trapframe = (trapframe_t *) &task_stacks[ntasks+1] - sizeof(trapframe_t);
-    initial_trapframe->ra = (uint32) &spin;
+    // set the registers correctly when initially
+    // switching to this task
+    initial_trapframe->ra = (uint32) &next_task;
     initial_trapframe->mepc = (uint32) task_func;
     initial_trapframe->mstatus = MSTATUS_MIE;
 
     tasks[ntasks] = (task) {
         .task_func = task_func,
+        // stack starts at the bottom of the trapframe
         .sp = (uint32) initial_trapframe,
         .context = {
-            .ra = (uint32) &spin,
+            // immediately schedule the next task upon this task's completion
+            .ra = (uint32) &next_task,
         },
     };
     ntasks++;
-
-    return &tasks[ntasks-1];
 }
 
 void start_scheduler() {
 
 }
 
-void schedule_next_task() {
+void next_task() {
 
 }
 

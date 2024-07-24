@@ -77,10 +77,12 @@ static inline void uart_enable_rx_interrupts(uart_registers *uart) {
 
 uart_registers* init_uart0(uart_setup *setup);
 uart_registers* init_uart1(uart_setup *setup);
-void clse_uart(uart_registers *uart);
+uart_registers* get_uart0();
+uart_registers* get_uart1();
+void close_uart(uart_registers *uart);
 
 void uart_send_data(uart_registers *uart, char data);
-void uart_receive_data(uart_registers *uart, char data);
+char uart_receive_data(uart_registers *uart);
 
 void uart_putc(uart_registers *uart, char c);
 void uart_printf(uart_registers *uart, char *string);
