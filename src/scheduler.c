@@ -45,7 +45,7 @@ inline uint32 setup_task(uint32 taskid, void (*task_func)()) {
     return 0;
 }
 
-void start_task(void (*task_func)()) {
+uint32 start_task(void (*task_func)()) {
     int taskid = 0;
     while (taskid < MAX_NTASKS && tasks[taskid].task_func != &spin) {
         taskid++;
@@ -56,10 +56,6 @@ void start_task(void (*task_func)()) {
 
 void start_scheduler() {}
 
-uint32 kernel_terminate_task(uint32 taskid) {
+uint32 terminate_task(uint32 taskid) {
     return setup_task(taskid, &spin);
-}
-
-uint32 env_terminate_task(uint32 taskid) {
-    return envcall0(ENV_TERMINATE_TASK);
 }

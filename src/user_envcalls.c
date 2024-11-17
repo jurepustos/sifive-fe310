@@ -93,3 +93,7 @@ uint32 envcall6(uint32 id, uint32 arg1, uint32 arg2, uint32 arg3, uint32 arg4,
           "r"(id));
     return retval;
 }
+
+uint32 env_terminate_task(uint32 taskid) {
+    return envcall0(ENV_TERMINATE_TASK);
+}

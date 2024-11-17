@@ -2,6 +2,7 @@
 #include "devices/gpio.h"
 #include "devices/uart.h"
 #include "primitives.h"
+#include "scheduler.h"
 
 uint32 handle_envcall(uint32 id, uint32 arg1, uint32 arg2, uint32 arg3,
                       uint32 arg4, uint32 arg5, uint32 arg6) {
@@ -125,4 +126,8 @@ uint32 kernel_set_gpio_pin(uint32 pin, uint32 enable) {
         gpio_clear_pin(pin);
     }
     return 0;
+}
+
+uint32 kernel_terminate_task(uint32 taskid) {
+    return terminate_task(taskid);
 }

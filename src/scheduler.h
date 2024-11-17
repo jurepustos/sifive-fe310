@@ -13,7 +13,8 @@ typedef struct {
     void (*task_func)();
 } task;
 
-void start_task(void (*task_func)());
+uint32 start_task(void (*task_func)());
+uint32 terminate_task(uint32 taskid);
 void start_scheduler();
 
 #endif
