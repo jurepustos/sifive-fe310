@@ -12,8 +12,8 @@ typedef char byte;
 #define true 1
 #define false 0
 
+#define NULL 0
+
 #define WORD_SIZE 4
-
-
 
 #endif

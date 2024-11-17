@@ -1,8 +1,12 @@
-#include "primitives.h"
+#ifndef ENVCALLS_H
+#define ENVCALLS_H
 
-int32 console_write(int32 interface, char* buf, int32 count);
-int32 console_read(int32 interface, char* buf, int32 count);
-int32 green_led_set(int32 enable);
-int32 red_led_set(int32 enable);
-int32 blue_led_set(int32 enable);
-int32 gpio_set(int32 pin, int32 enable);
+#define ENV_WRITE_CONSOLE 0
+#define ENV_READ_CONSOLE 1
+#define ENV_SET_GREEN_LED 2
+#define ENV_SET_RED_LED 3
+#define ENV_SET_BLUE_LED 4
+#define ENV_SET_GPIO_PIN 5
+#define ENV_TERMINATE_TASK 6
+
+#endif
