@@ -1,4 +1,5 @@
 #include "user_envcalls.h"
+#include "envcalls.h"
 
 uint32 envcall0(uint32 id) {
     uint32 retval;
@@ -94,6 +95,31 @@ uint32 envcall6(uint32 id, uint32 arg1, uint32 arg2, uint32 arg3, uint32 arg4,
     return retval;
 }
 
-uint32 env_terminate_task(uint32 taskid) {
-    return envcall0(ENV_TERMINATE_TASK);
+uint32 env_write_console(uint32 interface, char* buf, uint32 count) {
+    return envcall3(ENV_WRITE_CONSOLE, interface, (uint32) buf, count);
 }
+
+uint32 env_read_console(uint32 interface, char* buf, uint32 count) {
+    return envcall3(ENV_READ_CONSOLE, interface, (uint32) buf, count);
+}
+
+uint32 env_set_green_led(uint32 enable) {
+    return envcall1(ENV_SET_GREEN_LED, enable);
+}
+
+uint32 env_set_red_led(uint32 enable) {
+    return envcall1(ENV_SET_RED_LED, enable);
+}
+
+uint32 env_set_blue_led(uint32 enable) {
+    return envcall1(ENV_SET_BLUE_LED, enable);
+}
+
+uint32 env_set_gpio_pin(uint32 pin, uint32 enable) {
+    return envcall2(ENV_SET_BLUE_LED, pin, enable);
+}
+
+uint32 env_terminate_task(uint32 taskid) {
+    return envcall1(ENV_TERMINATE_TASK, taskid);
+}
+
