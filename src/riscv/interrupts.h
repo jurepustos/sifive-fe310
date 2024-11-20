@@ -62,8 +62,9 @@ void disable_software_interrupts();
 
 __attribute__((always_inline)) static inline void __save_trapframe() {
     asm volatile (
+        "sw sp,   -28*4(sp)   \n"
+        "addi sp, sp, -31*4 \n"
         "sw ra,   2*4(sp)   \n"
-        "sw sp,   3*4(sp)   \n"
         "sw a0,   4*4(sp)   \n"
         "sw a1,   5*4(sp)   \n"
         "sw a2,   6*4(sp)   \n"
@@ -95,7 +96,6 @@ __attribute__((always_inline)) static inline void __save_trapframe() {
         "sw t0,   0*4(sp)   \n"
         "csrr t0, mstatus   \n"
         "sw t0,   1*4(sp)"
-        :: "i" (-sizeof(trapframe_t))
     );
 }
 
@@ -106,7 +106,6 @@ __attribute__((always_inline)) static inline void __restore_trapframe() {
         "lw t0,   1*4(sp) \n"
         "csrw mstatus, t0 \n"
         "lw ra,   2*4(sp) \n"
-        "lw sp,   4*4(sp) \n"
         "lw a0,   4*4(sp) \n"
         "lw a1,   5*4(sp) \n"
         "lw a2,   6*4(sp) \n"
@@ -134,7 +133,7 @@ __attribute__((always_inline)) static inline void __restore_trapframe() {
         "lw s9,  28*4(sp) \n"
         "lw s10, 29*4(sp) \n"
         "lw s11, 30*4(sp) \n"
-        :: "i" (sizeof(trapframe_t))
+        "lw sp,   3*4(sp) \n"
     );
 }
 
